@@ -1,0 +1,11 @@
+[build]
+  publish = "."
+
+[functions]
+  directory = "."
+  node_bundler = "esbuild"
+
+[[redirects]]
+  from = "/api/posts"
+  to = "/.netlify/functions/posts"
+  status = 200
