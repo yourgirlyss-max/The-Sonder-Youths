@@ -14,7 +14,11 @@ export default async (req) => {
 
   if (req.method === "POST" || req.method === "DELETE") {
     const body = await req.json().catch(() => ({}));
-    if (!process.env.ADMIN_PASSWORD || body.password !== process.env.ADMIN_PASSWORD) {
+    const expected = (process.env.ADMIN_PASSWORD || "").trim();
+    if (!expected) {
+      return json({ error: "ADMIN_PASSWORD is not set for this site's functions in Netlify" }, 500);
+    }
+    if (String(body.password || "").trim() !== expected) {
       return json({ error: "Wrong password" }, 401);
     }
     if (body.check) return json({ ok: true });
